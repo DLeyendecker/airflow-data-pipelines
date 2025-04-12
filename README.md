@@ -1,4 +1,4 @@
-# Projeto Final - Pipeline com Apache Airflow
+# Pipeline com Apache Airflow
 
 Este projeto simula um pipeline de dados utilizando o **Apache Airflow**, que realiza o monitoramento e processamento de arquivos JSON gerados por turbinas eólicas. Os dados são armazenados em um banco **PostgreSQL** e e-mails são enviados com base em regras de temperatura.
 
