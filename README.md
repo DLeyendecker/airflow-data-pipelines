@@ -1,8 +1,8 @@
-# 💨 Projeto Final - Pipeline com Apache Airflow
+# Projeto Final - Pipeline com Apache Airflow
 
-Este projeto simula um pipeline de dados utilizando o **Apache Airflow**, que realiza o monitoramento e processamento de arquivos JSON gerados por turbinas eólicas. Os dados são armazenados em um banco PostgreSQL e e-mails são enviados com base em regras de temperatura.
+Este projeto simula um pipeline de dados utilizando o **Apache Airflow**, que realiza o monitoramento e processamento de arquivos JSON gerados por turbinas eólicas. Os dados são armazenados em um banco **PostgreSQL** e e-mails são enviados com base em regras de temperatura.
 
-## 📌 Objetivo
+## 🎯 Objetivo
 
 - Monitorar arquivos com dados de sensores (JSON).
 - Processar os dados com operadores do Airflow.
@@ -11,45 +11,51 @@ Este projeto simula um pipeline de dados utilizando o **Apache Airflow**, que re
 
 ## ⚙️ Componentes da DAG
 
-### 📁 **FileSensorTask**
-- Verifica se o arquivo existe antes de iniciar a DAG.
-- Não dispara a DAG automaticamente quando o arquivo é criado.
-- Usa conexão `fs_default` (precisa ser criada no Airflow).
+### **FileSensorTask**
+- Verifica o arquivo em intervalos regulares.
+- Não monitora a pasta indefinidamente.
+- Não inicializa a DAG quando o arquivo for disponibilizado.
+- Não tem conhecimento das execuções anteriores da DAG.
+- `filepath`: verifica se o arquivo existe antes de prosseguir.
+- `fs_conn_id`: conexão com o arquivo através de conexão do Airflow. Conexão padrão: `fs_default`.
 
-### 🌀 **windturbine (simulador)**
+### **windturbine (simulador)**
 - Gera um arquivo JSON com a seguinte estrutura:
-```json
-{
-  "idtemp": "1",
-  "powerfactor": "0.88",
-  "hydraulicpressure": "78.86",
-  "temperature": "25.27",
-  "timestamp": "2023-03-19 17:26:55.230351"
-}
+  ```json
+  {
+    "idtemp": "1",
+    "powerfactor": "0.8837929080361997",
+    "hydraulicpressure": "78.86011124702158",
+    "temperature": "25.279809506572597",
+    "timestamp": "2023-03-19 17:26:55.230351"
+  }
 
-Simulado por um notebook Python.
+  - Vamos usar um arquivo pronto.
+- Notebook Python simula a geração do arquivo.
 
-🐍 PythonOperator
-Lê o conteúdo do JSON.
+## **schedule_interval**
+- A cada 3 minutos:
 
-Envia as 5 variáveis via XCom.
+- No desenvolvimento, vamos usar `None`.
 
-Exclui o arquivo após leitura.
+## **PythonOperator**
+- Deverá ler o JSON.
+- Colocar as 5 variáveis no `XCom`.
+- Excluir o arquivo.
 
-🌡️ BranchPythonOperator
-Verifica a variável temperature:
+## **BranchPythonOperator**
+- Se a temperatura for maior ou igual a 24°C, manda e-mail de **alerta**.
+- Caso contrário, manda e-mail **informativo**.
 
-Se ≥ 24°C → envia e-mail de alerta.
+## **PostgresOperator**
+- Cria a tabela.
+- Insere os dados.
 
-Se < 24°C → envia e-mail informativo.
+## **Pré-Etapas**
+- Criar conexão para o `FileSensorTask`.
+- Criar variável com caminho do arquivo JSON.
 
-🗃️ PostgresOperator
-Cria a tabela no PostgreSQL (caso não exista).
 
-Insere os dados recebidos do JSON.
-
-🧭 Agendamento
-Executa a cada 3 minutos:
 
 
 ![image](https://github.com/user-attachments/assets/8c317dba-f6a1-4412-96ac-03eb6fbea7a0)
