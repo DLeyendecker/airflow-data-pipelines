@@ -2,14 +2,14 @@
 
 Este projeto simula um pipeline de dados utilizando o **Apache Airflow**, que realiza o monitoramento e processamento de arquivos JSON gerados por turbinas eólicas. Os dados são armazenados em um banco **PostgreSQL** e e-mails são enviados com base em regras de temperatura.
 
-## 🎯 Objetivo
+## Objetivo
 
 - Monitorar arquivos com dados de sensores (JSON).
 - Processar os dados com operadores do Airflow.
 - Armazenar os dados em um banco PostgreSQL.
 - Enviar e-mails de alerta com base na temperatura.
 
-## ⚙️ Componentes da DAG
+## Componentes da DAG
 
 ### **FileSensorTask**
 - Verifica o arquivo em intervalos regulares.
@@ -54,8 +54,5 @@ Este projeto simula um pipeline de dados utilizando o **Apache Airflow**, que re
 ## **Pré-Etapas**
 - Criar conexão para o `FileSensorTask`.
 - Criar variável com caminho do arquivo JSON.
-
-
-
 
 ![image](https://github.com/user-attachments/assets/8c317dba-f6a1-4412-96ac-03eb6fbea7a0)
