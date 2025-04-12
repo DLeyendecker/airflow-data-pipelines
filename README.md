@@ -30,7 +30,6 @@ Este projeto simula um pipeline de dados utilizando o **Apache Airflow**, que re
     "timestamp": "2023-03-19 17:26:55.230351"
   }
 
-  - Vamos usar um arquivo pronto.
 - Notebook Python simula a geração do arquivo.
 
 ## **schedule_interval**
